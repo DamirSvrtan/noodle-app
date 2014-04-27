@@ -1,7 +1,7 @@
 class ChatHandler < Noodles::Websocket::Handler
   def on_open env
-    ChatChannel.connections << connection
-    ChatChannel.broadcast "hello"
+    add_connection self
+    broadcast "hello"
   end
 
   def on_message env, msg
@@ -9,6 +9,6 @@ class ChatHandler < Noodles::Websocket::Handler
   end
 
   def on_close env
-
+    remove_connection self
   end
 end
