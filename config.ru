@@ -18,7 +18,7 @@ OUTPUT
 result end
 end
 
-use BenchMarker, 10_000
+# use BenchMarker, 10_000
 
 
 
