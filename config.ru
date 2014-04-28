@@ -24,13 +24,13 @@ app = BestQuotes::Application.new
 
 use Rack::ContentType
 
-app.http_app.route do
-  match "", "quotes#index"
-  match "abc", "quotes#slimmy"
-  match "hamly", "quotes#hamly"
-  match "pipa/:id/slavina/:slavina_id", "quotes#hamly"
-  match "sub-app", proc { |env| [200, {}, [env['PATH_INFO']]] }
-  match "sub-app2", proc { [200, {}, ['ANOTHER SUB APP']] }
+app.http_app.routes do
+  get "", "quotes#index"
+  get "abc", "quotes#slimmy"
+  get "hamly", "quotes#hamly"
+  get "pipa/:id/slavina/:slavina_id", "quotes#hamly"
+  get "sub-app", proc { |env| [200, {}, [env['PATH_INFO']]] }
+  get "sub-app2", proc { [200, {}, ['ANOTHER SUB APP']] }
 end
 
 run app
