@@ -21,19 +21,17 @@ end
 # use BenchMarker, 10_000
 
 app = BestQuotes::Application.new
-    use Rack::ContentType
-    app.http_app.route do
-      match "", "quotes#index"
-      match "abc", "quotes#slimmy"
-      match "sub-app",
-        proc { [200, {}, ["Hello, sub-app!"]] }
-      # default routes
-      match ":controller/:id/:action"
-      match ":controller/:id",
-        :default => { "action" => "show" }
-      match ":controller",
-        :default => { "action" => "index" }
-    end
+
+use Rack::ContentType
+
+app.http_app.route do
+  match "", "quotes#index"
+  match "abc", "quotes#slimmy"
+  match "hamly", "quotes#hamly"
+  match "pipa/:id/slavina/:slavina_id", "quotes#hamly"
+  match "sub-app", proc { |env| [200, {}, [env['PATH_INFO']]] }
+  match "sub-app2", proc { [200, {}, ['ANOTHER SUB APP']] }
+end
 
 run app
 
