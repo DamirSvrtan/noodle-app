@@ -27,6 +27,10 @@ class QuotesController < Noodles::Http::Controller
     render haml: 'hamly'
   end
 
+  def index
+    "HEEEEY"
+  end
+
   def text
     '<h1>No Quote</h1>'
   end
