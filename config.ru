@@ -6,6 +6,7 @@ use Rack::Session::Cookie, :secret => 'abc123'
 use Rack::ShowExceptions
 use Rack::CommonLogger, $stdout
 use Rack::ContentType
+use Rack::Static, urls: ["/css", "/images", "/js"], root: "public"
 
 use OmniAuth::Builder do
   provider :facebook, '312961052192621', '9bbc99ea0fe36924939b5022743a6ea4'
