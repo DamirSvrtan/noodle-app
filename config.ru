@@ -9,8 +9,8 @@ use Rack::ContentType
 use Rack::Static, urls: ["/css", "/images", "/js"], root: "public"
 
 use OmniAuth::Builder do
-  provider :facebook, '312961052192621', '9bbc99ea0fe36924939b5022743a6ea4'
-  provider :github, '47a54178a58a310f0e03', '616480bca66a1b578cd0b9d847047365973cae03'
+  provider :facebook, ENV['NOODLE_FB_ID'], ENV['NOODLE_FB_SECRET']
+  provider :github, ENV['NOODLE_GITHUB_ID'], ENV['NOODLE_GITHUB_SECRET']
 end
 
 app = BestQuotes::Application.new
