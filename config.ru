@@ -16,8 +16,7 @@ end
 app = BestQuotes::Application.new
 
 app.http_app.routes do
-  get "", "quotes#index"
-  get "abc", "quotes#slimmy"
+  root_to 'quotes#slimmy'
   get "hamly", "quotes#hamly"
   get "pipa/:id/slavina/:slavina_id", "quotes#hamly"
   get "sub-app", proc { |env| [200, {}, [env['PATH_INFO']]] }
