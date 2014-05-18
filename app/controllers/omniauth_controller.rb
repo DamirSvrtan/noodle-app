@@ -2,14 +2,16 @@ require 'pry'
 
 class OmniauthController < Noodles::Http::Controller
   def failure
-    binding.pry
+    render haml: :failure
   end
 
   def success
-    binding.pry
-    puts params[:provider]
-    @email = env['omniauth.auth']['info']['email']
-    @name = env['omniauth.auth']['info']['name']
+    case params['provider']
+    when 'github'
+      @name = env['omniauth.auth']['info']['nickname']
+    when 'facebook'
+      @name = env['omniauth.auth']['info']['name']
+    end
     render haml: :success
   end
 end
