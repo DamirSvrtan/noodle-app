@@ -2,7 +2,7 @@ require 'pry'
 
 class OmniauthController < Noodles::Http::Controller
   def failure
-    render haml: :failure
+    haml :failure
   end
 
   def success
@@ -12,6 +12,6 @@ class OmniauthController < Noodles::Http::Controller
     when 'facebook'
       @name = env['omniauth.auth']['info']['name']
     end
-    render haml: :success
+    haml :success
   end
 end

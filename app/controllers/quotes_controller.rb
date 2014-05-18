@@ -4,35 +4,35 @@ class QuotesController < Noodles::Http::Controller
   def a_quote
     @name = "Something pretty."
     @user_agent = request.user_agent
-    render html: 'a_quote'
+    html 'a_quote'
   end
 
   def erb
     @name = "Something pretty."
     @user_agent = request.user_agent
-    render erb: 'a_quote'
+    erb 'a_quote'
   end
 
   def html
     @name = "Something pretty."
     @user_agent = request.user_agent
-    render html: 'a_quote'
+    html 'a_quote'
   end
 
   def slimmy
-    render slim: 'slimmy'
+    slim 'slimmy'
   end
 
   def hamly
-    render haml: 'hamly'
+    haml 'hamly'
   end
 
   def index
-    "HEEEEY"
+    text "HEEEEY"
   end
 
   def text
-    '<h1>No Quote</h1>'
+    text '<h1>No Quote</h1>'
   end
 
   def exception
