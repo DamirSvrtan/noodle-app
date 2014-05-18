@@ -1,4 +1,5 @@
 require './config/application'
+require './config/router'
 require 'omniauth-facebook'
 require 'omniauth-github'
 
@@ -13,16 +14,4 @@ use OmniAuth::Builder do
   provider :github, ENV['NOODLE_GITHUB_ID'], ENV['NOODLE_GITHUB_SECRET']
 end
 
-app = BestQuotes::Application.new
-
-app.http_app.routes do
-  root_to 'quotes#slimmy'
-  get "hamly", "quotes#hamly"
-  get "pipa/:id/slavina/:slavina_id", "quotes#hamly"
-  get "sub-app", proc { |env| [200, {}, [env['PATH_INFO']]] }
-  get "sub-app2", proc { [200, {}, ['ANOTHER SUB APP']] }
-  get "auth/:provider/callback", 'omniauth#success'
-  get "auth/failure", 'omniauth#failure'
-end
-
-run app
+run Noodles.application

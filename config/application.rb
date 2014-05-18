@@ -1,15 +1,7 @@
 require 'noodles'
-$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "app", "controllers")
-$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "app", "handlers")
-$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "app", "channels")
 
-require 'quotes_controller'
-require 'home_controller'
-require 'omniauth_controller'
-require 'chat_handler'
-require 'chat_channel'
-
-module BestQuotes
-  class Application < Noodles::Application
-  end
+%w(controllers handlers channels).each do |app_folder|
+  app_folder_path = File.join(File.dirname(__FILE__), "..", "app", app_folder)
+  $LOAD_PATH << app_folder_path
+  Dir[File.join(app_folder_path, "*.rb")].each {|file| require file }
 end

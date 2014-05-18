@@ -12,6 +12,8 @@ class OmniauthController < Noodles::Http::Controller
     when 'facebook'
       @name = env['omniauth.auth']['info']['name']
     end
+
+    response.set_cookie "provider", params['provider']
     haml :success
   end
 end
