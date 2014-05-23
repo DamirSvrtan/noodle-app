@@ -3,7 +3,7 @@ require './config/router'
 require 'omniauth-facebook'
 require 'omniauth-github'
 
-use Rack::Session::Cookie, :secret => Noodles.secrets.session_secret
+use Rack::Session::Cookie, secret: Noodles.secrets.session_secret
 use Rack::ShowExceptions if Noodles.env.development?
 use Rack::CommonLogger, $stdout
 use Rack::ContentType
