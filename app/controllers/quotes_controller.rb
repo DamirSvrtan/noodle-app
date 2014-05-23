@@ -1,6 +1,8 @@
 require 'pry'
 
 class QuotesController < Noodles::Http::Controller
+  view ApplicationView
+
   def a_quote
     @name = "Something pretty."
     @user_agent = request.user_agent
