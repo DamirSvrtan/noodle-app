@@ -1,5 +1,27 @@
 module AuthHelper
   def current_user
-    "Damir"
+    if signed_in?
+      User.find(info[:user_id])
+    end
+  end
+
+  def current_user_name
+    info[:user_name]
+  end
+
+  def signed_in?
+    if info.nil?
+      false
+    else
+      !!info[:user_id]
+    end
+  end
+
+  def info
+    Noodles.cache.get(session_id)
+  end
+
+  def session_id
+    @env['rack.session']['session_id']
   end
 end

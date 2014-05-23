@@ -3,8 +3,9 @@ html
   link href="/css/chat.css" rel="stylesheet"
   body
     .container
-      .row
-        h4="Current user:     #{current_user}"
+      - if signed_in?
+        .row
+          h4="Current user: #{current_user_name}"
       .row
         a{href="/auth/github"}Github Login
         br
