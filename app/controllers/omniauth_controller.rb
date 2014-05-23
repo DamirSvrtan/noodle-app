@@ -13,7 +13,7 @@ class OmniauthController < Noodles::Http::Controller
       @name = env['omniauth.auth']['info']['name']
     end
 
-    response.set_cookie "provider", params['provider']
+    response.set_cookie "provider", value: params['provider'], path: "/"
     haml :success
   end
 end
