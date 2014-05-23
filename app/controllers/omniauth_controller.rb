@@ -6,14 +6,18 @@ class OmniauthController < Noodles::Http::Controller
   end
 
   def success
+    info = env['omniauth.auth']['info']
+
     case params['provider']
     when 'github'
-      @name = env['omniauth.auth']['info']['nickname']
+      @name = info['nickname']
     when 'facebook'
-      @name = env['omniauth.auth']['info']['name']
+      @name = info['name']
     end
 
     response.set_cookie "provider", value: params['provider'], path: "/"
-    haml :success
+
+    user = User.first_or_create(name: @name, provider: params["provider"])
+    redirect_to '/'
   end
 end

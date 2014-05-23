@@ -1,5 +1,6 @@
 require './config/application'
 require './config/router'
+require './config/setup'
 require 'omniauth-facebook'
 require 'omniauth-github'
 
