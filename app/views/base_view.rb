@@ -1,3 +1,3 @@
-class ApplicationView
+class BaseView
   include AuthHelper
 end

@@ -10,11 +10,7 @@ module AuthHelper
   end
 
   def signed_in?
-    if info.nil?
-      false
-    else
-      !!info[:user_id]
-    end
+    info && info[:user_id]
   end
 
   def info
