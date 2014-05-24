@@ -20,4 +20,12 @@ module AuthHelper
   def session_id
     @env['rack.session']['session_id']
   end
+
+  def sign_out
+    Noodles.cache.delete(session_id)
+  end
+
+  def sign_in(user)
+    Noodles.cache.set(session_id, { user_id: user.id, user_name: user.name })
+  end
 end

@@ -2,6 +2,13 @@ html
   link href="/css/bootstrap.css" rel="stylesheet"
   link href="/css/chat.css" rel="stylesheet"
   body
+    .navbar
+      .navbar-inner
+        a.brand{href="#"}Github Chatterbox
+        - if signed_in?
+          ul.nav.pull-right
+            li
+              a{href="/logout"}Sign out
     .container
       - if signed_in?
         .row

@@ -1,0 +1,25 @@
+html
+  link href="/css/bootstrap.css" rel="stylesheet"
+  link href="/css/chat.css" rel="stylesheet"
+  body
+    .navbar
+      .navbar-inner
+        a.brand{href=""}Github Chatterbox
+        - if signed_in?
+          ul.nav.pull-right
+            li
+              a{href="/logout"}Sign out
+
+    .container
+      .row
+        .span12.text-center
+          h3 Please login to continue
+      .row.text-center
+        .span3.offset3
+          a{href="auth/facebook"}
+            img{src="/images/facebook-logo.png" width='200'}
+          h3.black-text Facebook
+        .span3
+          a{href="auth/github"}
+            img{src="/images/github-logo.png" width='200'}
+          h3.black-text Github

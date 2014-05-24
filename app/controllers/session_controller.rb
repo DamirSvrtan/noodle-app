@@ -1,9 +1,6 @@
 require 'pry'
 
 class SessionController < BaseController
-  def failure
-    haml :failure
-  end
 
   def success
     info = env['omniauth.auth']['info']
@@ -15,11 +12,21 @@ class SessionController < BaseController
       @name = info['name']
     end
 
-    response.set_cookie "provider", value: params['provider'], path: "/"
+    # response.set_cookie "provider", value: params['provider'], path: "/"
 
-    user = User.first_or_create(name: @name, provider: params["provider"])
+    user = User.first_or_create(name: @name, provider: params['provider'])
 
-    Noodles.cache.set(session_id, {user_id: user.id, user_name: user.name})
+    sign_in(user)
+
+    redirect_to '/'
+  end
+
+  def failure
+    haml :failure
+  end
+
+  def logout
+    sign_out
     redirect_to '/'
   end
 end
