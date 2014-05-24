@@ -13,8 +13,7 @@ class SessionController < BaseController
     end
 
     # response.set_cookie "provider", value: params['provider'], path: "/"
-
-    user = User.first_or_create(name: @name, provider: params['provider'])
+    user = User.where(name: @name, provider: params['provider']).first_or_create
 
     sign_in(user)
 
