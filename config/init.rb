@@ -1,4 +1,6 @@
 require 'noodles'
+require_relative 'router'
+require_relative 'setup'
 
 %w(models helpers views controllers handlers channels).each do |app_folder|
   app_folder_path = File.join(File.dirname(__FILE__), "..", "app", app_folder)
