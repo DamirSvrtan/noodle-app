@@ -6,6 +6,7 @@ use Rack::Session::Cookie, secret: Noodles.secrets.session_secret
 use Rack::ShowExceptions if Noodles.env.development?
 use Rack::CommonLogger, $stdout
 use Rack::ContentType
+use Rack::MethodOverride
 use Rack::Static, urls: ["/css", "/images", "/js", "/favicon.ico"], root: "public"
 
 use OmniAuth::Builder do

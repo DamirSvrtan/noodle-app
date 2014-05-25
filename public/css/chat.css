@@ -14,3 +14,15 @@
 .black-text{
   color: black;
 }
+
+.navbar-inner{
+  height:40px;
+}
+.logout-button {
+  background:none;
+  border:none; 
+  padding:0;
+  padding-top:18px;
+  padding-left: 10px;
+  color: white;
+}

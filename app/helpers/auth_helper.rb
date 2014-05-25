@@ -20,9 +20,7 @@ module AuthHelper
   end
 
   def session_id
-    unless @env['rack.session'].loaded?
-      @env['rack.session']['init'] = true
-    end
+    @env['rack.session']['init'] = true unless @env['rack.session'].loaded?
     @env['rack.session']['session_id']
   end
 

@@ -12,7 +12,9 @@ html
               a
                 = current_user_name
             li
-              a{href="/logout"}Sign out
+              form{action="/logout" method="post" class="logout-form"}
+                input{type="hidden" name="_method" value="delete"}
+                input{type="submit" class="logout-button" value="Sign Out"}
     .container-fluid
       .row-fluid
         .span2.left-sidebar
