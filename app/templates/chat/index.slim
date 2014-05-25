@@ -1,6 +1,7 @@
 html
   link href="/css/bootstrap.css" rel="stylesheet"
   link href="/css/chat.css" rel="stylesheet"
+  script src="/js/jquery-2.1.1.min.js"
   body
     .navbar
       .navbar-inner
@@ -8,23 +9,27 @@ html
         - if signed_in?
           ul.nav.pull-right
             li
+              a
+                = current_user_name
+            li
               a{href="/logout"}Sign out
-    .container
-      - if signed_in?
-        .row
-          h4="Current user: #{current_user_name}"
-      .row
-        a{href="/auth/github"}Github Login
-        br
-        a{href="/auth/facebook"}Facebook Login
-      .row
-        .col-lg-8.col-lg-offset-2
-          h1 Mini Chatter
-          #message-box.row-fluid
+    .container-fluid
+      .row-fluid
+        .span2.left-sidebar
+          ul.nav.nav-tabs.nav-stacked
+            li
+              a Users
+            - users.each do |user|
+              li
+                a{href="/"}= "#{user.name} (#{user.provider})"
+        .span8.main-content
           .row-fluid
-            form#new-message role="form" 
-              .form-group
-                label for="content"  Type message
-                input#new-message-content.form-control placeholder=("Enter message") type="content" 
-              button.btn.btn-default type="submit"  Submit
+            #message-box.row-fluid
+            .row-fluid
+              form#new-message role="form" 
+                .form-group
+                  label for="content"  Type message
+                  input#new-message-content.form-control placeholder=("Enter message") type="content"
+                button.btn.btn-default type="submit"  Submit
+        .span2.right-sidebar
   script src="/js/chat.js"
