@@ -13,11 +13,16 @@ module AuthHelper
     info && info[:user_id]
   end
 
+  alias_method :authenticated?, :signed_in?
+
   def info
     Noodles.cache.get(session_id)
   end
 
   def session_id
+    unless @env['rack.session'].loaded?
+      @env['rack.session']['init'] = true
+    end
     @env['rack.session']['session_id']
   end
 

@@ -1,5 +1,4 @@
-var username = "User_" + Math.floor((Math.random()*1000)+1);
-var connection = new WebSocket('ws://'+ location.host + '/chat?username=' + username);
+var connection = new WebSocket('ws://' + location.host + '/chat');
 
 connection.onmessage = function(e){
   var response = JSON.parse(e.data);
@@ -9,11 +8,7 @@ connection.onmessage = function(e){
 document.forms["new-message"].onsubmit = function(){
     var messageText = document.getElementById("new-message-content");
     if(messageText.value != ''){
-      var newMessage = {
-        'username': username,
-        'message': messageText.value
-      };
-      connection.send(JSON.stringify(newMessage));
+      connection.send(messageText.value);
       messageText.value ='';
     }
     return false;
