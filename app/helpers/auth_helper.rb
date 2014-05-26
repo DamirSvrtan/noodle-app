@@ -9,6 +9,10 @@ module AuthHelper
     info[:user_name]
   end
 
+  def current_user_id
+    info[:user_id]
+  end
+
   def signed_in?
     info && info[:user_id]
   end
@@ -26,7 +30,7 @@ module AuthHelper
 
   def sign_out
     sessions = cached_sessions
-    sessions = sessions.delete(session_id)
+    sessions.delete(session_id)
     Noodles.cache.set(:sessions, sessions)
   end
 

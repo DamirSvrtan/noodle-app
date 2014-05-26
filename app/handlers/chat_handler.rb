@@ -6,8 +6,8 @@ class ChatHandler < Noodles::Websocket::Handler
     @env = env
     if authenticated?
       add_connection self
-      msg = { username: current_user_name, message: 'connected' }
-      broadcast msg.to_json
+      msg = { username: current_user_name, user_id: current_user_id, message: 'connected' }
+      broadcast_but_self msg.to_json
     end
   end
 
@@ -20,7 +20,7 @@ class ChatHandler < Noodles::Websocket::Handler
   def on_close env
     @env = env
     remove_connection self
-    msg = { username: current_user_name, message: 'disconnected' }
-    broadcast msg.to_json
+    msg = { username: current_user_name, user_id: current_user_id, message: 'disconnected' }
+    broadcast_but_self msg.to_json
   end
 end
