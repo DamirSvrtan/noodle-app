@@ -5,27 +5,36 @@ Array.prototype.indexOfObject = function arrayObjectIndexOf(property, value) {
     return -1;
 }
 
+var Action = []
+
 var app = angular.module('chat', [ ]);
 
 dashboardController = function($scope){
-  dashboard = this;
+  var dashboard = this;
   dashboard.users = $('.all-users').data('users');
   dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
+
+  var addToDashboard = function(response){
+    $scope.$apply(function(){
+      var userInfo = { name: response.username, id: response.user_id };
+      dashboard.users.push(userInfo);
+    });
+  };
+
+  var removeFromDashboard = function(response){
+    $scope.$apply(function(){
+      var index = dashboard.users.indexOfObject("id", response.user_id);
+      if (index > -1) dashboard.users.splice(index, 1);
+    });    
+  };
 
   dashboard.websocket.onmessage = function(e){
     var response = JSON.parse(e.data);
     if(response.message == "connected"){
-      $scope.$apply(function(){
-        dashboard.users.push({name: response.username, id: response.user_id});
-      });
+      addToDashboard(response);
     };
     if(response.message == "disconnected"){
-      $scope.$apply(function(){
-        var index = dashboard.users.indexOfObject("id", response.user_id)
-        if (index > -1) {
-            dashboard.users.splice(index, 1);
-        }
-      });
+      removeFromDashboard(response);
     };
     // appendToMessageBox(response.username, response.message);
   }
