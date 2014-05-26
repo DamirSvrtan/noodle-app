@@ -16,7 +16,7 @@ module AuthHelper
   alias_method :authenticated?, :signed_in?
 
   def info
-    Noodles.cache.get(session_id)
+    cached_sessions[session_id]
   end
 
   def session_id
@@ -25,10 +25,18 @@ module AuthHelper
   end
 
   def sign_out
-    Noodles.cache.delete(session_id)
+    sessions = cached_sessions
+    sessions = sessions.delete(session_id)
+    Noodles.cache.set(:sessions, sessions)
   end
 
   def sign_in(user)
-    Noodles.cache.set(session_id, { user_id: user.id, user_name: user.name })
+    sessions = cached_sessions
+    sessions[session_id] = { user_id: user.id, user_name: user.name }
+    Noodles.cache.set(:sessions, sessions)
+  end
+
+  def cached_sessions
+    Noodles.cache.get(:sessions) || {}
   end
 end
