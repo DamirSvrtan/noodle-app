@@ -11,20 +11,28 @@ var app = angular.module('chat', [ ]);
 
 dashboardController = function($scope){
   var dashboard = this;
-  dashboard.users = $('.all-users').data('users');
+  dashboard.onlineUsers = $('.all-users').data('online-users');
+  dashboard.offlineUsers = $('.all-users').data('offline-users');
   dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
 
   var addToDashboard = function(response){
     $scope.$apply(function(){
       var userInfo = { name: response.username, id: response.user_id };
-      dashboard.users.push(userInfo);
+      dashboard.onlineUsers.push(userInfo);
+
+      var index = dashboard.offlineUsers.indexOfObject("id", response.user_id);
+      if (index > -1) dashboard.offlineUsers.splice(index, 1);
+
     });
   };
 
   var removeFromDashboard = function(response){
     $scope.$apply(function(){
-      var index = dashboard.users.indexOfObject("id", response.user_id);
-      if (index > -1) dashboard.users.splice(index, 1);
+      var index = dashboard.onlineUsers.indexOfObject("id", response.user_id);
+      if (index > -1) dashboard.onlineUsers.splice(index, 1);
+
+      var userInfo = { name: response.username, id: response.user_id };
+      dashboard.offlineUsers.push(userInfo);
     });    
   };
 
