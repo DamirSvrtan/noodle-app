@@ -3,5 +3,6 @@ Noodles.http_app.routes do
   get 'chat', 'chat#index'
   get "auth/:provider/callback", 'session#success'
   get "auth/failure", 'session#failure'
+  post "rooms", "rooms#create"
   delete "logout", 'session#logout'
 end

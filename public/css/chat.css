@@ -10,6 +10,10 @@
   padding-left: 10px;
 }
 
+li.offline-user a, li.offline-user a:hover{
+  background-color: #ad1d28;
+}
+
 .black-text{
   color: black;
 }
@@ -26,6 +30,25 @@
   padding-left: 10px;
   color: white;
 }
+
+.create-new-room{
+  height:300px;
+  background-color: #ad1d28;
+}
+
+.create-new-room h4{
+  display: inline-block;
+  padding-left: 20px;
+}
+#room-name{
+  padding-left: 10px;
+  margin-left: 20px;
+  width:80%;
+}
+#room-submit{
+  margin-left: 20px;
+}
+
 
 input#new-message{
   

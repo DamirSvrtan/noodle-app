@@ -19,5 +19,10 @@ class BaseView
     end.to_json
   end
 
+  def rooms
+    Rooms.all.map do |room|
+      {id: room.id, name: room.name}
+    end.to_json
+  end
 
 end

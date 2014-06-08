@@ -24,16 +24,9 @@ html(ng-app="chat")
  
         .span2.left-sidebar(ng-controller="OnlineUserDashboard as dashboard")
           ul.nav.nav-tabs.nav-stacked.all-users(data-online-users=online_users; data-offline-users=offline_users)
-            li.headline
-              a Online Users
-            li(ng-repeat="onlineUser in dashboard.onlineUsers")
+            li(class="online-user" ng-repeat="onlineUser in dashboard.onlineUsers")
               a(href="/" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
-
-            br
-
-            li.headline
-              a Offline Users
-            li(ng-repeat="offlineUser in dashboard.offlineUsers")
+            li(class="offline-user" ng-repeat="offlineUser in dashboard.offlineUsers")
               a(href="/" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
             /   a Users
             / - users.each do |user|
@@ -42,11 +35,11 @@ html(ng-app="chat")
  
 
 
-        .span8.main-content
+        .span8.main-content.conversation
           .row-fluid
             #message-box.row-fluid
             .row-fluid
-              form#new-message-form role="form" 
+              form#new-message-form role="form"
                 .form-group
                   input#new-message.form-control placeholder="Enter message"
                 button.btn.btn-default type="submit"  Submit
@@ -54,3 +47,12 @@ html(ng-app="chat")
 
 
         .span2.right-sidebar
+          .create-new-room
+            h4 Create new room
+            form action="rooms" method="post" role="form"
+              .form-group
+                input#room-name.form-control type="text" name="name" placeholder="Room Name" 
+                button.btn.btn-default#room-submit type="submit"
+                  | Submit
+
+
