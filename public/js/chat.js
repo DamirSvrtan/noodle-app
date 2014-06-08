@@ -23,7 +23,8 @@ dashboardController = function($scope){
 
   this.newMessage = {};
   this.pushMessage = function(message){
-    alert(message);
+    // alert(message);
+    dashboard.websocket.send(message);
     this.newMessage = {};
   };
 
@@ -51,10 +52,11 @@ dashboardController = function($scope){
     var response = JSON.parse(e.data);
     if(response.message == "connected"){
       addNewOnlineUser(response);
-    };
-    if(response.message == "disconnected"){
+    }else if(response.message == "disconnected"){
       addNewOfflineUser(response);
-    };
+    }else{
+      appendToMessageBox(response.username, response.message);
+    }
     // appendToMessageBox(response.username, response.message);
   }
 };
