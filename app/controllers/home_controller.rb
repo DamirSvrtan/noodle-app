@@ -8,5 +8,4 @@ class HomeController < BaseController
     end
   end
 
-
 end

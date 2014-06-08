@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: noodle_db
+      hosts:
+        - localhost:27017

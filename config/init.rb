@@ -1,4 +1,11 @@
 require 'noodles'
+require 'mongoid'
+require 'pry'
+
+mongo_yml_path = File.expand_path '../mongoid.yml', __FILE__
+
+Mongoid.load!(mongo_yml_path, :development)
+
 require_relative 'router'
 require_relative 'setup'
 

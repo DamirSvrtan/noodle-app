@@ -7,5 +7,4 @@ end
 
 gem 'omniauth-facebook'
 gem 'omniauth-github'
-gem 'activerecord'
-gem 'mysql2'
+gem 'mongoid'
