@@ -21,6 +21,12 @@ dashboardController = function($scope){
 
   dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
 
+  this.newMessage = {};
+  this.pushMessage = function(message){
+    alert(message);
+    this.newMessage = {};
+  };
+
   var addNewOnlineUser = function(response){
     $scope.$apply(function(){
       var userInfo = { name: response.username, id: response.user_id };
@@ -53,17 +59,7 @@ dashboardController = function($scope){
   }
 };
 
-messageController = function($scope){
-  this.newMessage = {};
-  this.pushMessage = function(newMessage){
-    alert('hello');
-    alert(dashboard);
-    this.newMessage = {};
-  };
-};
-
 app.controller('OnlineUserDashboard', dashboardController);
-app.controller('MessageController', messageController);
 
     function appendToMessageBox(name, message){
         var newContent = document.createElement('h4');

@@ -20,9 +20,9 @@ html(ng-app="chat")
 
 
     .container-fluid
-      .row-fluid
+      .row-fluid(ng-controller="OnlineUserDashboard as dashboard")
  
-        .span2.left-sidebar(ng-controller="OnlineUserDashboard as dashboard")
+        .span2.left-sidebar
           ul.nav.nav-tabs.nav-stacked.all-users(data-online-users=online_users; data-offline-users=offline_users)
             li(class="online-user" ng-repeat="onlineUser in dashboard.onlineUsers")
               a(href="/" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
@@ -33,10 +33,6 @@ html(ng-app="chat")
           ul.nav.nav-tabs.nav-stacked.all-rooms(data-rooms=rooms)
             li(class="room" ng-repeat="room in dashboard.rooms")
               a(href="/" data-room-id="{{room.id}}") {{ room.name }}
-            /   a Users
-            / - users.each do |user|
-            /   li
-            /     a{href="/"}= "#{user.name} (#{user.provider})"
  
 
 
@@ -44,9 +40,9 @@ html(ng-app="chat")
           .row-fluid
             #message-box.row-fluid
             .row-fluid
-              form#new-message-form name="newMessageForm" role="form" ng-controller="MessageController as messageCtrl" ng-submit="newMessageForm.$valid && messageCtrl.pushMessage(newMessage)" novalidate=true
+              form#new-message-form name="newMessageForm" role="form" ng-submit="newMessageForm.$valid && dashboard.pushMessage(dashboard.newMessage.content)" novalidate=true
                 .form-group
-                  input#new-message.form-control placeholder="Enter message" ng-model="messageCtrl.newMessage.content" required=true
+                  input#new-message.form-control placeholder="Enter message" ng-model="dashboard.newMessage.content" required=true
                 button.btn.btn-default type="submit"  Submit
  
 
