@@ -44,9 +44,9 @@ html(ng-app="chat")
           .row-fluid
             #message-box.row-fluid
             .row-fluid
-              form#new-message-form role="form"
+              form#new-message-form name="newMessageForm" role="form" ng-controller="MessageController as messageCtrl" ng-submit="newMessageForm.$valid && messageCtrl.pushMessage(newMessage)" novalidate=true
                 .form-group
-                  input#new-message.form-control placeholder="Enter message"
+                  input#new-message.form-control placeholder="Enter message" ng-model="messageCtrl.newMessage.content" required=true
                 button.btn.btn-default type="submit"  Submit
  
 

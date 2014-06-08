@@ -53,7 +53,17 @@ dashboardController = function($scope){
   }
 };
 
+messageController = function($scope){
+  this.newMessage = {};
+  this.pushMessage = function(newMessage){
+    alert('hello');
+    alert(dashboard);
+    this.newMessage = {};
+  };
+};
+
 app.controller('OnlineUserDashboard', dashboardController);
+app.controller('MessageController', messageController);
 
     function appendToMessageBox(name, message){
         var newContent = document.createElement('h4');
@@ -94,14 +104,14 @@ $(document).ready(function(){
 //     appendToMessageBox(response.username, response.message);
 //   }
 
-  document.forms["new-message-form"].onsubmit = function(){
-      var messageText = document.getElementById("new-message");
-      if(messageText.value != ''){
-        // connection.send(messageText.value);
-        messageText.value ='';
-      }
-      return false;
-  }
+  // document.forms["new-message-form"].onsubmit = function(){
+  //     var messageText = document.getElementById("new-message");
+  //     if(messageText.value != ''){
+  //       // connection.send(messageText.value);
+  //       messageText.value ='';
+  //     }
+  //     return false;
+  // }
 
 
 
