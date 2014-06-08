@@ -5,28 +5,33 @@ Array.prototype.indexOfObject = function arrayObjectIndexOf(property, value) {
     return -1;
 }
 
-var Action = []
-
-var app = angular.module('chat', [ ]);
+var app = angular.module('chat', []);
 
 dashboardController = function($scope){
   var dashboard = this;
-  dashboard.onlineUsers = $('.all-users').data('online-users');
-  dashboard.offlineUsers = $('.all-users').data('offline-users');
+  $conversation = $('.conversation');
+  $allUsers = $('.all-users');
+  $allRooms = $('.all-rooms');
+
+  dashboard.onlineUsers = $allUsers.data('online-users');
+  dashboard.offlineUsers = $allUsers.data('offline-users');
+
+  dashboard.rooms = $allRooms.data('rooms');
+  dashboard.defaultRoomId = $conversation.data('default-room-id');
+
   dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
 
-  var addToDashboard = function(response){
+  var addNewOnlineUser = function(response){
     $scope.$apply(function(){
       var userInfo = { name: response.username, id: response.user_id };
       dashboard.onlineUsers.push(userInfo);
 
       var index = dashboard.offlineUsers.indexOfObject("id", response.user_id);
       if (index > -1) dashboard.offlineUsers.splice(index, 1);
-
     });
   };
 
-  var removeFromDashboard = function(response){
+  var addNewOfflineUser = function(response){
     $scope.$apply(function(){
       var index = dashboard.onlineUsers.indexOfObject("id", response.user_id);
       if (index > -1) dashboard.onlineUsers.splice(index, 1);
@@ -39,10 +44,10 @@ dashboardController = function($scope){
   dashboard.websocket.onmessage = function(e){
     var response = JSON.parse(e.data);
     if(response.message == "connected"){
-      addToDashboard(response);
+      addNewOnlineUser(response);
     };
     if(response.message == "disconnected"){
-      removeFromDashboard(response);
+      addNewOfflineUser(response);
     };
     // appendToMessageBox(response.username, response.message);
   }

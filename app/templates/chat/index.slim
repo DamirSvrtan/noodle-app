@@ -26,8 +26,13 @@ html(ng-app="chat")
           ul.nav.nav-tabs.nav-stacked.all-users(data-online-users=online_users; data-offline-users=offline_users)
             li(class="online-user" ng-repeat="onlineUser in dashboard.onlineUsers")
               a(href="/" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
+
             li(class="offline-user" ng-repeat="offlineUser in dashboard.offlineUsers")
               a(href="/" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
+
+          ul.nav.nav-tabs.nav-stacked.all-rooms(data-rooms=rooms)
+            li(class="room" ng-repeat="room in dashboard.rooms")
+              a(href="/" data-room-id="{{room.id}}") {{ room.name }}
             /   a Users
             / - users.each do |user|
             /   li
@@ -35,7 +40,7 @@ html(ng-app="chat")
  
 
 
-        .span8.main-content.conversation
+        .span8.main-content.conversation(data-default-room-id=default_room_id)
           .row-fluid
             #message-box.row-fluid
             .row-fluid

@@ -20,9 +20,13 @@ class BaseView
   end
 
   def rooms
-    Rooms.all.map do |room|
+    Room.all.map do |room|
       {id: room.id, name: room.name}
     end.to_json
+  end
+
+  def default_room_id
+    default_room = Room.where(name: "DefaultRoom").first.id
   end
 
 end
