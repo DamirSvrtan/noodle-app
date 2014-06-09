@@ -23,7 +23,6 @@ dashboardController = function($scope){
 
   this.newMessage = {};
   this.pushMessage = function(message){
-    // alert(message);
     dashboard.websocket.send(message);
     this.newMessage = {};
   };

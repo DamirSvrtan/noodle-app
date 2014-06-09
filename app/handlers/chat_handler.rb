@@ -22,6 +22,7 @@ class ChatHandler < Noodles::Websocket::Handler
     @env = env
     msg = { username: current_user_name, message: msg }
     broadcast msg.to_json
+    Room.where(name: "DefaultRoom").first.messages.create! content: msg, user_id: current_user_id, user_name: current_user_name
   end
 
   def on_close env

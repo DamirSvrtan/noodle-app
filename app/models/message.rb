@@ -3,7 +3,9 @@ class Message
   
   validates_presence_of :content, :user_id
 
-  field :content
+  field :content, type: String
+  field :user_name, type: String
+
   embedded_in :room
   belongs_to :user
 end
