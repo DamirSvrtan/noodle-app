@@ -5,7 +5,16 @@ Array.prototype.indexOfObject = function arrayObjectIndexOf(property, value) {
     return -1;
 }
 
+var scrollDown = function(){
+  var messageBox = document.getElementById("message-box");
+  messageBox.scrollTop = messageBox.scrollHeight;
+}
+
 var app = angular.module('chat', []);
+
+app.directive('messageScrollTopDirective', function() {
+  return function(scope, element, attrs) { if (scope.$last) scrollDown() };
+});
 
 dashboardController = function($scope){
   var dashboard = this;
@@ -46,7 +55,7 @@ dashboardController = function($scope){
 
       var userInfo = { name: response.user_name, id: response.user_id };
       dashboard.offlineUsers.push(userInfo);
-    });    
+    });
   };
 
   dashboard.websocket.onmessage = function(e){
@@ -56,62 +65,14 @@ dashboardController = function($scope){
     }else if(response.message == "disconnected"){
       addNewOfflineUser(response);
     }else{
-      appendToMessageBox(response.user_name, response.message);
+      $scope.$apply(function(){
+        var msg = {};
+        msg.user_name = response.user_name;
+        msg.message = response.message;
+        dashboard.messages.push(msg);
+      });
     }
-    // appendToMessageBox(response.user_name, response.message);
   }
 };
 
 app.controller('OnlineUserDashboard', dashboardController);
-
-    function appendToMessageBox(name, message){
-        var newContent = document.createElement('h4');
-        var nameLabel = document.createElement('span');
-        var labelClass = 'label label-';
-
-        if(message == "connected"){
-          labelClass += 'success';
-        }else if(message == "disconnected"){
-          labelClass += 'important';
-        }else{
-          labelClass += 'primary';
-        }
-
-        nameLabel.className = labelClass;
-        nameLabel.innerHTML = name;
-
-        var messageContent = document.createElement('span');
-        messageContent.className = "submited-message"
-        messageContent.innerHTML = message;
-
-        newContent.appendChild(nameLabel)
-        newContent.appendChild(messageContent)
-
-        var messageBox = document.getElementById("message-box");
-        messageBox.appendChild(newContent);
-        messageBox.scrollTop = messageBox.scrollHeight;
-    }
-
-
-
-
-$(document).ready(function(){
-//   var connection = new WebSocket('ws://' + location.host + '/chat');
-
-//   connection.onmessage = function(e){
-//     var response = JSON.parse(e.data);
-//     appendToMessageBox(response.user_name, response.message);
-//   }
-
-  // document.forms["new-message-form"].onsubmit = function(){
-  //     var messageText = document.getElementById("new-message");
-  //     if(messageText.value != ''){
-  //       // connection.send(messageText.value);
-  //       messageText.value ='';
-  //     }
-  //     return false;
-  // }
-
-
-
-});
