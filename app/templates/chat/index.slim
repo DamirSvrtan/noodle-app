@@ -36,11 +36,11 @@ html(ng-app="chat")
  
 
 
-        .span8.main-content.conversation(data-default-room-id=default_room_id)
+        .span8.main-content.conversation(data-default-room-id=default_room_id; data-default-room-messages=default_room_messages)
           .row-fluid
             #message-box.row-fluid
             .row-fluid
-              form#new-message-form name="newMessageForm" role="form" ng-submit="newMessageForm.$valid && dashboard.pushMessage(dashboard.newMessage.content)" novalidate=true
+              form#new-message-form name="newMessageForm" role="form" ng-submit="newMessageForm.$valid && dashboard.sendNewMessage(dashboard.newMessage.content)" novalidate=true
                 .form-group
                   input#new-message.form-control placeholder="Enter message" ng-model="dashboard.newMessage.content" required=true
                 button.btn.btn-default type="submit"  Submit

@@ -19,10 +19,12 @@ dashboardController = function($scope){
   dashboard.rooms = $allRooms.data('rooms');
   dashboard.defaultRoomId = $conversation.data('default-room-id');
 
+  dashboard.messages = $conversation.data('default-room-messages');
+
   dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
 
   this.newMessage = {};
-  this.pushMessage = function(message){
+  this.sendNewMessage = function(message){
     dashboard.websocket.send(message);
     this.newMessage = {};
   };

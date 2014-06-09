@@ -25,6 +25,12 @@ class BaseView
     end.to_json
   end
 
+  def default_room_messages
+    Room.default_room.messages.last(15).map do |message|
+      message.angular_hash
+    end.to_json
+  end
+
   def default_room_id
     default_room = Room.where(name: "DefaultRoom").first.id
   end

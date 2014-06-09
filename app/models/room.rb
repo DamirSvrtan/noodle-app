@@ -6,4 +6,8 @@ class Room
 
   has_and_belongs_to_many :users
   embeds_many :messages
+
+  def self.default_room
+    find_by(name: "DefaultRoom")
+  end
 end
