@@ -8,4 +8,8 @@ class Message
 
   embedded_in :room
   belongs_to :user
+
+  def stringified_json
+    {user_name: user_name, message: content, user_id: user_id}.to_json
+  end
 end

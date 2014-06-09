@@ -29,7 +29,7 @@ dashboardController = function($scope){
 
   var addNewOnlineUser = function(response){
     $scope.$apply(function(){
-      var userInfo = { name: response.username, id: response.user_id };
+      var userInfo = { name: response.user_name, id: response.user_id };
       dashboard.onlineUsers.push(userInfo);
 
       var index = dashboard.offlineUsers.indexOfObject("id", response.user_id);
@@ -42,7 +42,7 @@ dashboardController = function($scope){
       var index = dashboard.onlineUsers.indexOfObject("id", response.user_id);
       if (index > -1) dashboard.onlineUsers.splice(index, 1);
 
-      var userInfo = { name: response.username, id: response.user_id };
+      var userInfo = { name: response.user_name, id: response.user_id };
       dashboard.offlineUsers.push(userInfo);
     });    
   };
@@ -54,9 +54,9 @@ dashboardController = function($scope){
     }else if(response.message == "disconnected"){
       addNewOfflineUser(response);
     }else{
-      appendToMessageBox(response.username, response.message);
+      appendToMessageBox(response.user_name, response.message);
     }
-    // appendToMessageBox(response.username, response.message);
+    // appendToMessageBox(response.user_name, response.message);
   }
 };
 
@@ -98,7 +98,7 @@ $(document).ready(function(){
 
 //   connection.onmessage = function(e){
 //     var response = JSON.parse(e.data);
-//     appendToMessageBox(response.username, response.message);
+//     appendToMessageBox(response.user_name, response.message);
 //   }
 
   // document.forms["new-message-form"].onsubmit = function(){
