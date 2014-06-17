@@ -3,7 +3,6 @@ class ChatHandler < Noodles::Websocket::Handler
   include AuthHelper
 
   def on_open env
-    @env = env
     if authenticated?
       add_connection self
       OnlineUsersTracker[self] = current_user
@@ -19,13 +18,11 @@ class ChatHandler < Noodles::Websocket::Handler
   end
 
   def on_message env, msg
-    @env = env
     newMessage = Room.where(name: "DefaultRoom").first.messages.create! content: msg, user_id: current_user_id, user_name: current_user_name
     broadcast newMessage.stringified_json
   end
 
   def on_close env
-    @env = env
     remove_connection self
     user = OnlineUsersTracker.delete(self)
     msg = { user_name: user.name, user_id: user.id, message: 'disconnected' }
