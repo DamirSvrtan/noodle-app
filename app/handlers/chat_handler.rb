@@ -4,7 +4,7 @@ class ChatHandler < Noodles::Websocket::Handler
 
   def on_open env
     if authenticated?
-      add_connection self
+      register_connection!
       OnlineUsersTracker[self] = current_user
       begin
         msg = { user_name: current_user_name, user_id: current_user_id, message: 'connected' }
@@ -23,7 +23,7 @@ class ChatHandler < Noodles::Websocket::Handler
   end
 
   def on_close env
-    remove_connection self
+    unregister_connection!
     user = OnlineUsersTracker.delete(self)
     msg = { user_name: user.name, user_id: user.id, message: 'disconnected' }
     broadcast_but_self msg.to_json
