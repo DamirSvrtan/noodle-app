@@ -6,7 +6,7 @@ module AuthHelper
   end
 
   def session
-    @env['rack.session']
+    @session
   end
 
   def current_user_name
