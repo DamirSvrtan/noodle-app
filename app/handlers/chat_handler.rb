@@ -78,7 +78,7 @@ class ChatHandler < Noodles::Websocket::Handler
 
     def switch_public_room(message)
       room = Room.find_or_create_private_conversation(message.user_id, current_user_id)
-      send_data switch_public_room_response(room, message.user_id)
+      send_data switch_room_response(room, message.user_id)
     end
 
     def user_connected
@@ -96,7 +96,7 @@ class ChatHandler < Noodles::Websocket::Handler
         action: NEW_MESSAGE }.to_json
     end
 
-    def switch_public_room_response(room, other_user_id=nil)
+    def switch_room_response(room, other_user_id=nil)
       last_messages = room.messages.last(15).map do |message|
         message.angular_hash
       end
