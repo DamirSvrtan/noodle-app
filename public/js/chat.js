@@ -17,6 +17,10 @@ app.directive('messageScrollTopDirective', function() {
 });
 
 dashboardController = function($scope){
+  var USER_CONNECTED = 1;
+  var USER_DISCONNECTED = 2;
+  var NEW_MESSAGE = 3;
+
   var dashboard = this;
   $conversation = $('.conversation');
   $allUsers = $('.all-users');
@@ -60,17 +64,17 @@ dashboardController = function($scope){
 
   dashboard.websocket.onmessage = function(e){
     var response = JSON.parse(e.data);
-    if(response.message == "connected"){
-      addNewOnlineUser(response);
-    }else if(response.message == "disconnected"){
-      addNewOfflineUser(response);
-    }else{
-      $scope.$apply(function(){
-        var msg = {};
-        msg.user_name = response.user_name;
-        msg.message = response.message;
-        dashboard.messages.push(msg);
-      });
+    switch(response.action){
+      case USER_CONNECTED:
+        addNewOnlineUser(response);
+        break;
+      case USER_DISCONNECTED:
+        addNewOfflineUser(response);
+        break;
+      default:
+        $scope.$apply(function(){
+          dashboard.messages.push(response);
+        });
     }
   }
 };

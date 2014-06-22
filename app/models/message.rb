@@ -9,10 +9,6 @@ class Message
   embedded_in :room
   belongs_to :user
 
-  def stringified_json
-    angular_hash.to_json
-  end
-
   def angular_hash
     { user_name: user_name, message: content, user_id: user_id }
   end
