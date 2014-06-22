@@ -23,20 +23,23 @@ html(ng-app="chat")
       .row-fluid(ng-controller="ChatDashboard as dashboard")
  
         .span2.left-sidebar
-          ul.nav.nav-tabs.nav-stacked.all-users(data-online-users=online_users; data-offline-users=offline_users)
+          ul.nav.nav-tabs.nav-stacked.conversations-index(data-online-users=online_users; data-offline-users=offline_users data-rooms=rooms)
             li(class="online-user" ng-repeat="onlineUser in dashboard.onlineUsers")
               a(href="/" ng-click="dashboard.openConversation($event, onlineUser.id)" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
 
             li(class="offline-user" ng-repeat="offlineUser in dashboard.offlineUsers")
               a(href="/" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
 
-          ul.nav.nav-tabs.nav-stacked.all-rooms(data-rooms=rooms)
             li(class="room" ng-repeat="room in dashboard.rooms")
               a(href="/" data-room-id="{{room.id}}") {{ room.name }}
  
 
 
-        .span8.main-content.conversation(data-room-id=default_room_id; data-default-room-messages=default_room_messages)
+        .span8.main-content.conversation(data-room-id=default_room_id; data-room-name=default_room_name data-default-room-messages=default_room_messages)
+          .row-fluid
+            .span12.chat-room-name
+              h1
+                | {{ dashboard.roomName }}
           .row-fluid
             #message-box.row-fluid
               h4(ng-repeat="message in dashboard.messages" message-scroll-top-directive)

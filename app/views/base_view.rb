@@ -32,7 +32,10 @@ class BaseView
   end
 
   def default_room_id
-    default_room = Room.where(name: "DefaultRoom").first.id
+    Room.default_room.id
   end
 
+  def default_room_name
+    Room.default_room.name
+  end
 end

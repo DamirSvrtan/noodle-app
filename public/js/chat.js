@@ -73,15 +73,15 @@ dashboardController = function($scope){
 
   var dashboard = this;
   $conversation = $('.conversation');
-  $allUsers = $('.all-users');
-  $allRooms = $('.all-rooms');
+  $conversationsIndex = $('.conversations-index');
 
-  dashboard.onlineUsers = $allUsers.data('online-users');
-  dashboard.offlineUsers = $allUsers.data('offline-users');
+  dashboard.onlineUsers = $conversationsIndex.data('online-users');
+  dashboard.offlineUsers = $conversationsIndex.data('offline-users');
 
-  dashboard.rooms = $allRooms.data('rooms');
+  dashboard.rooms = $conversationsIndex.data('rooms');
   dashboard.roomId = $conversation.data('room-id');
 
+  dashboard.roomName = $conversation.data('room-name');
   dashboard.messages = $conversation.data('default-room-messages');
 
   dashboard.noodlesWebSocket = new NoodlesWebSocket('ws://' + location.host + '/chat');
@@ -128,6 +128,7 @@ dashboardController = function($scope){
 
   var changeConversation = function(response){
     dashboard.roomId = response.room_id;
+    dashboard.roomName = response.room_name;
     $scope.$apply(function(){
       dashboard.messages.length = 0;
       for(key in response.messages){
