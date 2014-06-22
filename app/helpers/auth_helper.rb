@@ -19,11 +19,6 @@ module AuthHelper
 
   alias_method :authenticated?, :signed_in?
 
-  def session_id
-    @env['rack.session']['init'] = true unless @env['rack.session'].loaded?
-    @env['rack.session']['session_id']
-  end
-
   def sign_out
     session.delete(:user_id)
     session.delete(:user_name)
