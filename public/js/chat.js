@@ -67,7 +67,9 @@ dashboardController = function($scope){
   var USER_CONNECTED = 1;
   var USER_DISCONNECTED = 2;
   var NEW_MESSAGE = 3;
-  var SWITCH_ROOM = 4
+  var SWITCH_PUBLIC_ROOM = 4;
+  var SWITCH_PRIVATE_ROOM = 5;
+  var ROOM_MESSAGES = 6;
 
   var dashboard = this;
   $conversation = $('.conversation');
@@ -78,17 +80,27 @@ dashboardController = function($scope){
   dashboard.offlineUsers = $allUsers.data('offline-users');
 
   dashboard.rooms = $allRooms.data('rooms');
-  dashboard.defaultRoomId = $conversation.data('default-room-id');
+  dashboard.roomId = $conversation.data('room-id');
 
   dashboard.messages = $conversation.data('default-room-messages');
 
   dashboard.noodlesWebSocket = new NoodlesWebSocket('ws://' + location.host + '/chat');
 
+  this.openConversation = function($event, userId){
+    $event.preventDefault();
+    var message = {
+      action: SWITCH_PUBLIC_ROOM,
+      user_id: userId
+    };
+    dashboard.noodlesWebSocket.send(message);
+  }
+
   this.newMessage = {};
   this.sendNewMessage = function(message){
     var newMessage = {
       content: message,
-      action: NEW_MESSAGE
+      action: NEW_MESSAGE,
+      room_id: dashboard.roomId
     };
     dashboard.noodlesWebSocket.send(newMessage);
     this.newMessage = {};
@@ -123,6 +135,9 @@ dashboardController = function($scope){
       case USER_DISCONNECTED:
         addNewOfflineUser(response);
         break;
+      case ROOM_MESSAGES:
+        console.log(response);
+        break;
       default:
         $scope.$apply(function(){
           dashboard.messages.push(response);
@@ -131,4 +146,4 @@ dashboardController = function($scope){
   }
 };
 
-app.controller('OnlineUserDashboard', dashboardController);
+app.controller('ChatDashboard', dashboardController);

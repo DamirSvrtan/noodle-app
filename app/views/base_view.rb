@@ -20,7 +20,7 @@ class BaseView
   end
 
   def rooms
-    Room.all.map do |room|
+    Room.where(public: true).map do |room|
       {id: room.id, name: room.name}
     end.to_json
   end

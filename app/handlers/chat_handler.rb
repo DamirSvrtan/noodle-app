@@ -2,10 +2,12 @@ require 'json'
 class ChatHandler < Noodles::Websocket::Handler
   include AuthHelper
 
-  USER_CONNECTED = 1;
-  USER_DISCONNECTED = 2;
-  NEW_MESSAGE = 3;
-  SWITCH_ROOM = 4
+  USER_CONNECTED = 1
+  USER_DISCONNECTED = 2
+  NEW_MESSAGE = 3
+  SWITCH_PUBLIC_ROOM = 4
+  SWITCH_PRIVATE_ROOM = 5
+  ROOM_MESSAGES = 6
 
   def on_open env
     if authenticated?
@@ -28,10 +30,11 @@ class ChatHandler < Noodles::Websocket::Handler
       message = OpenStruct.new(JSON.parse(msg))
       case message.action
       when NEW_MESSAGE
-        mongo_message = Room.where(name: "DefaultRoom").first.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
-        broadcast new_message(mongo_message)
-      when SWITCH_ROOM
-        
+        publish_new_message(message)
+      when SWITCH_PUBLIC_ROOM
+        switch_public_room(message)
+      when SWITCH_PRIVATE_ROOM
+        switch_private_room(message)
       end
     rescue => e
       binding.pry
@@ -39,6 +42,22 @@ class ChatHandler < Noodles::Websocket::Handler
   end
 
   private
+
+    def publish_new_message(message)
+      room = Room.find(message.room_id)
+      if room and room.public?
+        room.users << current_user unless room.users.include?(current_user)
+        mongo_message = room.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
+        broadcast new_message(mongo_message)
+      else
+        close_websocket
+      end
+    end
+
+    def switch_public_room(message)
+      room = Room.find_or_create_private_conversation(message.user_id, current_user_id)
+      send_data switch_public_room_response(room)
+    end
 
     def user_connected
       { user_name: current_user_name, user_id: current_user_id, action: USER_CONNECTED }.to_json
@@ -50,5 +69,12 @@ class ChatHandler < Noodles::Websocket::Handler
 
     def new_message(mongo_message)
       { user_name: mongo_message.user_name, message: mongo_message.content, action: NEW_MESSAGE }.to_json
+    end
+
+    def switch_public_room_response(room)
+      last_messages = room.messages.last(15).map do |message|
+        message.angular_hash
+      end
+      { action: ROOM_MESSAGES ,messages: last_messages }.to_json
     end
 end

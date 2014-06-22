@@ -20,12 +20,12 @@ html(ng-app="chat")
 
 
     .container-fluid
-      .row-fluid(ng-controller="OnlineUserDashboard as dashboard")
+      .row-fluid(ng-controller="ChatDashboard as dashboard")
  
         .span2.left-sidebar
           ul.nav.nav-tabs.nav-stacked.all-users(data-online-users=online_users; data-offline-users=offline_users)
             li(class="online-user" ng-repeat="onlineUser in dashboard.onlineUsers")
-              a(href="/" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
+              a(href="/" ng-click="dashboard.openConversation($event, onlineUser.id)" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
 
             li(class="offline-user" ng-repeat="offlineUser in dashboard.offlineUsers")
               a(href="/" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
@@ -36,7 +36,7 @@ html(ng-app="chat")
  
 
 
-        .span8.main-content.conversation(data-default-room-id=default_room_id; data-default-room-messages=default_room_messages)
+        .span8.main-content.conversation(data-room-id=default_room_id; data-default-room-messages=default_room_messages)
           .row-fluid
             #message-box.row-fluid
               h4(ng-repeat="message in dashboard.messages" message-scroll-top-directive)
