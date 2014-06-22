@@ -5,10 +5,6 @@ module AuthHelper
     end
   end
 
-  def session
-    @session
-  end
-
   def current_user_name
     session[:user_name]
   end

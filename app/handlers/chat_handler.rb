@@ -6,12 +6,8 @@ class ChatHandler < Noodles::Websocket::Handler
     if authenticated?
       register_connection!
       OnlineUsersTracker[self] = current_user
-      begin
-        msg = { user_name: current_user_name, user_id: current_user_id, message: 'connected' }
-        broadcast_but_self msg.to_json
-      rescue => e
-        binding.pry
-      end
+      msg = { user_name: current_user_name, user_id: current_user_id, message: 'connected' }
+      broadcast_but_self msg.to_json
     else
       close_websocket
     end

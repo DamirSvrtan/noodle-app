@@ -38,7 +38,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    noodles (0.0.7)
+    noodles (0.0.8)
       better_errors
       colorize
       dalli
@@ -84,7 +84,7 @@ GEM
     thor (0.19.1)
     tilt (2.0.1)
     tzinfo (0.3.39)
-    websocket-rack-noodles (0.4.1)
+    websocket-rack-noodles (0.4.3)
       em-websocket (~> 0.3.8)
       eventmachine (~> 1.0.0)
       rack
