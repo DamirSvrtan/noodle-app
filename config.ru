@@ -4,6 +4,7 @@ require 'omniauth-github'
 require 'better_errors'
 
 use Rack::Session::Cookie, secret: Noodles.secrets.session_secret
+BetterErrors.logger = Logger.new($stdout)
 use BetterErrors::Middleware if Noodles.env.development?
 use Rack::CommonLogger, $stdout
 use Rack::ContentType
