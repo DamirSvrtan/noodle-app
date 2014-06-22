@@ -10,8 +10,16 @@
   padding-left: 10px;
 }
 
-li.offline-user a, li.offline-user a:hover{
-  background-color: #ad1d28;
+.left-sidebar ul li.online-user > a,.left-sidebar ul li.online-user > a:hover{
+  color: #66FF66;
+}
+
+.left-sidebar ul li.offline-user a, .left-sidebar ul li.offline-user a:hover{
+  color: #FF3333;
+}
+
+.left-sidebar ul li.room > a,.left-sidebar ul li.room > a:hover{
+  /*color: #FFF;*/
 }
 
 .black-text{
