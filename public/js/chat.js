@@ -85,7 +85,7 @@ dashboardController = function($scope){
   dashboard.messages = $conversation.data('default-room-messages');
 
   dashboard.noodlesWebSocket = new NoodlesWebSocket('ws://' + location.host + '/chat');
-
+// $(".room a").filter( function(){ return $(this).attr('data-room-id').match(new RegExp("53948016e1b84fc209000002")) })
   this.openConversation = function($event, userId){
     $event.preventDefault();
     var message = {
