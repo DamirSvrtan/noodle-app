@@ -23,6 +23,10 @@ class OnlineUsersTracker
       User.all - online_users
     end
 
+    def get_connection(user)
+      @@online_users.key(user)
+    end
+
     alias_method :remove, :delete
   end
 end

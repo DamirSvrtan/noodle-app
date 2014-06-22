@@ -14,7 +14,13 @@ class Room
 
   def self.find_or_create_private_conversation(first_user_id, second_user_id)
     room_name = private_conversation_name(first_user_id, second_user_id)
-    Room.where(name: room_name, public: false).first_or_create
+    room = Room.where(name: room_name, public: false).first_or_initialize
+    return room if room.persisted?
+
+    room.users << User.find(first_user_id)
+    room.users << User.find(second_user_id)
+    room.save!
+    room
   end
 
   def self.private_conversation_name(first_user_id, second_user_id)

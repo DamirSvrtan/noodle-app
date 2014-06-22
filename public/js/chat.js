@@ -126,6 +126,27 @@ dashboardController = function($scope){
     });
   };
 
+  var changeConversation = function(response){
+    dashboard.roomId = response.room_id;
+    $scope.$apply(function(){
+      dashboard.messages.length = 0;
+      for(key in response.messages){
+        var message = response.messages[key];
+        if(typeof message == "object") dashboard.messages.push(message);
+      }
+    });
+  }
+
+  var appendNewMessage = function(response){
+    $scope.$apply(function(){
+      if(response.room_id === dashboard.roomId){
+        dashboard.messages.push(response);
+      }else{
+        // alert("OTHER_ROOM!");
+      }
+    });
+  }
+
   dashboard.noodlesWebSocket.onmessage = function(e){
     var response = JSON.parse(e.data);
     switch(response.action){
@@ -136,12 +157,13 @@ dashboardController = function($scope){
         addNewOfflineUser(response);
         break;
       case ROOM_MESSAGES:
-        console.log(response);
+        changeConversation(response);
+        break;
+      case NEW_MESSAGE:
+        appendNewMessage(response);
         break;
       default:
-        $scope.$apply(function(){
-          dashboard.messages.push(response);
-        });
+        alert("SUMTIN WEIRD");
     }
   }
 };

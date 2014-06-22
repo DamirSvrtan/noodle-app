@@ -10,19 +10,27 @@ class ChatHandler < Noodles::Websocket::Handler
   ROOM_MESSAGES = 6
 
   def on_open env
-    if authenticated?
-      register_connection!
-      OnlineUsersTracker[self] = current_user
-      broadcast_but_self user_connected
-    else
-      close_websocket
+    begin
+      if authenticated?
+        register_connection!
+        OnlineUsersTracker[self] = current_user
+        broadcast_but_self user_connected
+      else
+        close_websocket
+      end
+    rescue => e
+      binding.pry
     end
   end
 
   def on_close env
-    unregister_connection!
-    user = OnlineUsersTracker.delete(self)
-    broadcast_but_self user_disconnected(user)
+    begin
+      unregister_connection!
+      user = OnlineUsersTracker.delete(self)
+      broadcast_but_self user_disconnected(user)
+    rescue => e
+      binding.pry
+    end
   end
 
   def on_message env, msg
@@ -46,11 +54,25 @@ class ChatHandler < Noodles::Websocket::Handler
     def publish_new_message(message)
       room = Room.find(message.room_id)
       if room and room.public?
-        room.users << current_user unless room.users.include?(current_user)
-        mongo_message = room.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
-        broadcast new_message(mongo_message)
+        publish_new_public_message(message, room)
+      elsif room and room.users.include? current_user
+        publish_new_private_message(message, room)
       else
         close_websocket
+      end
+    end
+
+    def publish_new_public_message(message, room)
+      room.users << current_user unless room.users.include?(current_user)
+      mongo_message = room.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
+      broadcast new_message(mongo_message)
+    end
+
+    def publish_new_private_message(message, room)
+      mongo_message = room.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
+      room.users.each do |user|
+        user_connection = OnlineUsersTracker.get_connection(user)
+        user_connection && user_connection.send_data(new_message(mongo_message))
       end
     end
 
@@ -68,13 +90,16 @@ class ChatHandler < Noodles::Websocket::Handler
     end
 
     def new_message(mongo_message)
-      { user_name: mongo_message.user_name, message: mongo_message.content, action: NEW_MESSAGE }.to_json
+      { user_name: mongo_message.user_name,
+        message: mongo_message.content,
+        room_id: mongo_message.room.id,
+        action: NEW_MESSAGE }.to_json
     end
 
     def switch_public_room_response(room)
       last_messages = room.messages.last(15).map do |message|
         message.angular_hash
       end
-      { action: ROOM_MESSAGES ,messages: last_messages }.to_json
+      { action: ROOM_MESSAGES ,messages: last_messages, room_id: room.id }.to_json
     end
 end
