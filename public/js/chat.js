@@ -20,6 +20,7 @@ dashboardController = function($scope){
   var USER_CONNECTED = 1;
   var USER_DISCONNECTED = 2;
   var NEW_MESSAGE = 3;
+  var SWITCH_ROOM = 4
 
   var dashboard = this;
   $conversation = $('.conversation');
@@ -38,7 +39,11 @@ dashboardController = function($scope){
 
   this.newMessage = {};
   this.sendNewMessage = function(message){
-    dashboard.websocket.send(message);
+    var newMessage = {
+      content: message,
+      action: NEW_MESSAGE
+    };
+    dashboard.websocket.send(JSON.stringify(newMessage));
     this.newMessage = {};
   };
 

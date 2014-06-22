@@ -5,6 +5,7 @@ class ChatHandler < Noodles::Websocket::Handler
   USER_CONNECTED = 1;
   USER_DISCONNECTED = 2;
   NEW_MESSAGE = 3;
+  SWITCH_ROOM = 4
 
   def on_open env
     if authenticated?
@@ -23,8 +24,18 @@ class ChatHandler < Noodles::Websocket::Handler
   end
 
   def on_message env, msg
-    mongo_message = Room.where(name: "DefaultRoom").first.messages.create! content: msg, user_id: current_user_id, user_name: current_user_name
-    broadcast new_message(mongo_message)
+    begin
+      message = OpenStruct.new(JSON.parse(msg))
+      case message.action
+      when NEW_MESSAGE
+        mongo_message = Room.where(name: "DefaultRoom").first.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
+        broadcast new_message(mongo_message)
+      when SWITCH_ROOM
+        
+      end
+    rescue => e
+      binding.pry
+    end
   end
 
   private
