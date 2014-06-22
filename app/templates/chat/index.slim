@@ -28,10 +28,10 @@ html(ng-app="chat")
               a(href="/" ng-click="dashboard.openConversation($event, onlineUser.id)" data-user-id="{{onlineUser.id}}") {{ onlineUser.name }}
 
             li(class="offline-user" ng-repeat="offlineUser in dashboard.offlineUsers")
-              a(href="/" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
+              a(href="/" ng-click="dashboard.openConversation($event, offlineUser.id)" data-user-id="{{offlineUser.id}}") {{ offlineUser.name }}
 
             li(class="room" ng-repeat="room in dashboard.rooms")
-              a(href="/" data-room-id="{{room.id}}") {{ room.name }}
+              a(href="/" ng-click="dashboard.openRoom($event, room.id)" data-room-id="{{room.id}}") {{ room.name }}
  
 
 

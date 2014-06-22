@@ -77,6 +77,11 @@ class ChatHandler < Noodles::Websocket::Handler
     end
 
     def switch_public_room(message)
+      room = Room.find(message.room_id)
+      send_data switch_room_response(room)
+    end
+
+    def switch_private_room(message)
       room = Room.find_or_create_private_conversation(message.user_id, current_user_id)
       send_data switch_room_response(room, message.user_id)
     end

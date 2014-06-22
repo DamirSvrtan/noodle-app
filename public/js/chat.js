@@ -89,8 +89,17 @@ dashboardController = function($scope){
   this.openConversation = function($event, userId){
     $event.preventDefault();
     var message = {
-      action: SWITCH_PUBLIC_ROOM,
+      action: SWITCH_PRIVATE_ROOM,
       user_id: userId
+    };
+    dashboard.noodlesWebSocket.send(message);
+  }
+
+  this.openRoom = function($event, roomId){
+    $event.preventDefault();
+    var message = {
+      action: SWITCH_PUBLIC_ROOM,
+      room_id: roomId
     };
     dashboard.noodlesWebSocket.send(message);
   }
