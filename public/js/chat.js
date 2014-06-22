@@ -5,6 +5,53 @@ Array.prototype.indexOfObject = function arrayObjectIndexOf(property, value) {
     return -1;
 }
 
+function NoodlesWebSocket(url){
+  this.url = url;
+  this.webSocket = new WebSocket(url);
+
+  this.send = function(message){
+    if(message instanceof Object){
+      message = JSON.stringify(message);
+    }
+    this.webSocket.send(message)
+  }
+
+  this.close = function(){
+    this.webSocket.close();
+  }
+
+  this.onopen = null;
+  this.onmessage = null;
+  this.onclose = null;
+  this.onerror = null;
+
+  var noodlesWebSocketDelegator = this;
+
+  this.webSocket.onopen = function(event){
+    if(noodlesWebSocketDelegator.onopen !== null){
+      noodlesWebSocketDelegator.onopen(event);
+    }
+  }
+
+  this.webSocket.onmessage = function(event){
+    if(noodlesWebSocketDelegator.onmessage !== null){
+      noodlesWebSocketDelegator.onmessage(event);
+    }
+  }
+
+  this.webSocket.onclose = function(event){
+    if(noodlesWebSocketDelegator.onclose !== null){
+      noodlesWebSocketDelegator.onclose(event);
+    }
+  }
+
+  this.webSocket.onerror = function(event){
+    if(noodlesWebSocketDelegator.onerror !== null){
+      noodlesWebSocketDelegator.onerror(event);
+    }
+  }
+}
+
 var scrollDown = function(){
   var messageBox = document.getElementById("message-box");
   messageBox.scrollTop = messageBox.scrollHeight;
@@ -35,7 +82,7 @@ dashboardController = function($scope){
 
   dashboard.messages = $conversation.data('default-room-messages');
 
-  dashboard.websocket = new WebSocket('ws://' + location.host + '/chat');
+  dashboard.noodlesWebSocket = new NoodlesWebSocket('ws://' + location.host + '/chat');
 
   this.newMessage = {};
   this.sendNewMessage = function(message){
@@ -43,7 +90,7 @@ dashboardController = function($scope){
       content: message,
       action: NEW_MESSAGE
     };
-    dashboard.websocket.send(JSON.stringify(newMessage));
+    dashboard.noodlesWebSocket.send(newMessage);
     this.newMessage = {};
   };
 
@@ -67,7 +114,7 @@ dashboardController = function($scope){
     });
   };
 
-  dashboard.websocket.onmessage = function(e){
+  dashboard.noodlesWebSocket.onmessage = function(e){
     var response = JSON.parse(e.data);
     switch(response.action){
       case USER_CONNECTED:
