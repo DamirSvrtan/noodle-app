@@ -138,13 +138,7 @@ dashboardController = function($scope){
   var changeConversation = function(response){
     dashboard.roomId = response.room_id;
     dashboard.roomName = response.room_name;
-    $scope.$apply(function(){
-      dashboard.messages.length = 0;
-      for(key in response.messages){
-        var message = response.messages[key];
-        if(typeof message == "object") dashboard.messages.push(message);
-      }
-    });
+    dashboard.messages = response.messages;
   }
 
   var appendNewMessage = function(response){
