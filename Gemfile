@@ -8,3 +8,4 @@ end
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 gem 'mongoid'
+gem 'i18n', '0.6.11'

@@ -111,6 +111,7 @@ dashboardController = function($scope){
       action: NEW_MESSAGE,
       room_id: dashboard.roomId
     };
+    console.log(dashboard.roomId)
     dashboard.noodlesWebSocket.send(newMessage);
     this.newMessage = {};
   };

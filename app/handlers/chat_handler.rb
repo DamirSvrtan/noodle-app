@@ -110,7 +110,7 @@ class ChatHandler < Noodles::Websocket::Handler
 
       { action: ROOM_MESSAGES,
         messages: last_messages,
-        room_id: room.id,
+        room_id: room.id.to_s,
         room_name: room_name }.to_json
     end
 end
