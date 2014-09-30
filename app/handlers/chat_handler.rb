@@ -88,11 +88,11 @@ class ChatHandler < Noodles::Websocket::Handler
     end
 
     def user_connected
-      { user_name: current_user_name, user_id: current_user_id, action: USER_CONNECTED }.to_json
+      { user_name: current_user_name, user_id: current_user_id.to_s, action: USER_CONNECTED }.to_json
     end
 
     def user_disconnected(user)
-      { user_name: user.name, user_id: user.id, action: USER_DISCONNECTED }.to_json
+      { user_name: user.name, user_id: user.id.to_s, action: USER_DISCONNECTED }.to_json
     end
 
     def new_message(mongo_message)

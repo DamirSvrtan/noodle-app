@@ -120,6 +120,7 @@ dashboardController = function($scope){
     $scope.$apply(function(){
       var userInfo = { name: response.user_name, id: response.user_id };
       dashboard.onlineUsers.push(userInfo);
+      console.log(response)
 
       var index = dashboard.offlineUsers.indexOfObject("id", response.user_id);
       if (index > -1) dashboard.offlineUsers.splice(index, 1);
