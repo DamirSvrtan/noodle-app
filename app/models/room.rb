@@ -9,7 +9,7 @@ class Room
   embeds_many :messages
 
   def self.default_room
-    find_by(name: "DefaultRoom")
+    find_by(name: "DefaultRoom") || Room.create(name: "DefaultRoom", public: true, user_ids: [current_user.id])
   end
 
   def self.find_or_create_private_conversation(first_user_id, second_user_id)

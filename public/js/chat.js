@@ -138,9 +138,11 @@ dashboardController = function($scope){
   };
 
   var changeConversation = function(response){
-    dashboard.roomId = response.room_id;
-    dashboard.roomName = response.room_name;
-    dashboard.messages = response.messages;
+    $scope.$apply(function(){
+      dashboard.roomId = response.room_id;
+      dashboard.roomName = response.room_name;
+      dashboard.messages = response.messages;
+    });
   }
 
   var appendNewMessage = function(response){
