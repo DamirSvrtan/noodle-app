@@ -147,6 +147,9 @@ dashboardController = function($scope){
       if(response.room_id === dashboard.roomId){
         dashboard.messages.push(response);
       }else{
+        console.log('-------')
+        console.log(response)
+        console.log(dashboard.roomId)
         // alert("OTHER_ROOM!");
       }
     });
@@ -165,6 +168,7 @@ dashboardController = function($scope){
         changeConversation(response);
         break;
       case NEW_MESSAGE:
+        // alert('nova poruka')
         appendNewMessage(response);
         break;
       default:

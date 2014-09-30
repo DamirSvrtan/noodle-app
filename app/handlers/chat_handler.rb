@@ -65,6 +65,7 @@ class ChatHandler < Noodles::Websocket::Handler
     def publish_new_public_message(message, room)
       room.users << current_user unless room.users.include?(current_user)
       mongo_message = room.messages.create! content: message.content, user_id: current_user_id, user_name: current_user_name
+      # binding.pry
       broadcast new_message(mongo_message)
     end
 
@@ -97,7 +98,7 @@ class ChatHandler < Noodles::Websocket::Handler
     def new_message(mongo_message)
       { user_name: mongo_message.user_name,
         message: mongo_message.content,
-        room_id: mongo_message.room.id,
+        room_id: mongo_message.room.id.to_s,
         action: NEW_MESSAGE }.to_json
     end
 
